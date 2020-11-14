@@ -65,7 +65,7 @@ def run(command,
         process.returncode, "cmd: {0} exited with code {1}".format(
             " ".join(command), process.returncode), "\n".join(output))
 
-  return "\n".join(output)
+  return b"\n".join(output)
 
 
 def wait_for_docker_daemon(timeout=60):
@@ -161,10 +161,10 @@ def main():
 
   parser.add_argument(
       "--registry",
-      default="gcr.io/kubeflow-images-public",
+      default="gcr.io/infra-289407",
       help="The registry of the image")
   parser.add_argument("--tag", default="latest", help="The image tag")
-  parser.add_argument("--tf_version", default="1.6", help="Tensorflow version")
+  parser.add_argument("--tf_version", default="2.1.0", help="Tensorflow version")
   parser.add_argument("--platform", default="cpu", help="cpu or gpu")
   parser.add_argument(
       "--push_gcr",
