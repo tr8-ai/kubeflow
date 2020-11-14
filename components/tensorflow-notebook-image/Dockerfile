@@ -108,6 +108,7 @@ RUN cd /tmp && \
 
 # Install base python3 packages
 RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip3
 RUN pip3 --no-cache-dir install \
     jupyter-console==6.0.0 \
     jupyterlab \
