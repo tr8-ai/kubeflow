@@ -1,0 +1,21 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+featureGates:
+  FeatureGateName: true
+nodes:
+  - role: control-plane
+    image: v1.19.1:@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600
+    # add a mount from /path/to/my/files on the host to /files on the node
+    extraMounts:
+      - hostPath: /scratch
+        containerPath: /scratch
+  - role: worker
+    image: v1.19.1:@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600
+    extraMounts:
+      - hostPath: /scratch/worker0
+        containerPath: /scratch
+  - role: worker
+    image: v1.19.1:@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600
+    extraMounts:
+      - hostPath: /scratch/worker1
+        containerPath: /scratch
