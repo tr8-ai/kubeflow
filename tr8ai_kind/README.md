@@ -34,10 +34,10 @@ kind create cluster --config=tr8ai_kind.yaml --name tr8ai
 # Using /scratch/kubeflow_deployments folder 
 mkdir -p /scratch/kubeflow_deployments/kubeflow
 cd /scratch/kubeflow_deployments/kubeflow
-kfctl build -V -f https://raw.githubusercontent.com/kubeflow/manifests/master/kfdef/kfctl_k8s_istio.v1.2.0.yaml
+kfctl build -V -f https://raw.githubusercontent.com/kubeflow/manifests/master/kfdef/kfctl_k8s_istio.v1.0.2.yaml
 # above is handy just grabs the files, for mods and inspection
 # deploy the yaml
-kfctl apply -V -f kfctl_k8s_istio.v1.2.0.yaml
+kfctl apply -V -f kfctl_k8s_istio.v1.0.2.yaml
 
 
 # Inject gcr.io access to nodes 

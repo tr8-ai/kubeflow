@@ -63,7 +63,7 @@ def run(command,
   if process.returncode != 0:
     raise subprocess.CalledProcessError(
         process.returncode, "cmd: {0} exited with code {1}".format(
-            " ".join(command), process.returncode), "\n".join(output))
+            " ".join(command), process.returncode), b"\n".join(output))
 
   return b"\n".join(output)
 

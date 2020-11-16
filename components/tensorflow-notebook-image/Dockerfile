@@ -6,7 +6,7 @@ ARG BASE_IMAGE=tensorflow/tensorflow:1.13.2-py3-jupyter
 FROM $BASE_IMAGE
 
 ARG TF_SERVING_VERSION=0.0.0
-ARG NB_USER=tr8ai
+ARG NB_USER=jovyan
 
 USER root
 
@@ -108,7 +108,7 @@ RUN cd /tmp && \
 
 # Install base python3 packages
 RUN pip install --upgrade pip
-RUN pip3 install --upgrade pip3
+
 RUN pip3 --no-cache-dir install \
     jupyter-console==6.0.0 \
     jupyterlab \
@@ -119,13 +119,13 @@ RUN pip3 uninstall -y enum34
 RUN pip3 install --upgrade kfp
 
 
-COPY --chown=tr8ai:users requirements.txt /tmp
+COPY --chown=jovyan:users requirements.txt /tmp
 
 RUN docker-credential-gcr configure-docker && chown ${NB_USER}:users $HOME/.docker/config.json
 
 # Configure container startup
 EXPOSE 8888
-USER tr8ai
+USER jovyan
 ENTRYPOINT ["tini", "--"]
 CMD ["sh","-c", "jupyter notebook --notebook-dir=/home/${NB_USER} --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]
 
