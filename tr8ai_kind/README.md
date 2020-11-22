@@ -45,3 +45,41 @@ cd /tr8ai/kubeflow/tr8ai_kind
 bash kind-gcr.sh
 
 ```
+
+# kf-pipelines running in kind
+
+```
+export PIPELINE_VERSION=1.0.4
+
+# remove existing
+kubectl delete -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic-pns?ref=$PIPELINE_VERSION"
+kubectl delete -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION"
+
+# this will get stuck due to terminating 
+
+kubectl get namespace kubeflow  -o json > tmp.json
+
+# change the finalizing condition
+# FROM
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+
+# TO
+    "spec": {
+        "finalizers": []
+    },
+
+# start proxy and apply the finalizer change
+kubectl proxy &
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @tmp.json http://127.0.0.1:8001/api/v1/namespaces/kubeflow/finalize
+
+
+# deploy
+kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION"
+kubectl wait --for condition=established --timeout=60s crd/applications.app.k8s.io
+kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic-pns?ref=$PIPELINE_VERSION"
+
+```
